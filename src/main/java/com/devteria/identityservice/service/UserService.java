@@ -16,6 +16,10 @@ public class UserService {
 
     // create
     public User create(UserCreationRequest request) {
+        // is Exist ?
+        if (userRepository.existsByUsername(request.getUsername()))
+            throw new RuntimeException("User is existed");
+
         // create
         User user = new User();
 
