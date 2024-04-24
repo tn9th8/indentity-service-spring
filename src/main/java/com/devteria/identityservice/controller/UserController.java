@@ -24,6 +24,7 @@ public class UserController {
         this.apiResponse.setMessage("create a new user");
         this.apiResponse.setResult(this.userService.create(request));
         return this.apiResponse;
+        // advance: set message before go into this method
     }
 
     @PutMapping("/{id}")
