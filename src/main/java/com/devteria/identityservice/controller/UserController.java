@@ -1,5 +1,6 @@
 package com.devteria.identityservice.controller;
 
+import com.devteria.identityservice.dto.request.ApiResponse;
 import com.devteria.identityservice.dto.request.UserCreationRequest;
 import com.devteria.identityservice.dto.request.UserUpdateRequest;
 import com.devteria.identityservice.entity.User;
@@ -15,31 +16,38 @@ import java.util.List;
 public class UserController {
     @Autowired
     UserService userService;
+    @Autowired
+    ApiResponse<User> apiResponse;
 
     @PostMapping
-    User handleCreate(@RequestBody @Valid UserCreationRequest request) {
-        return userService.create(request);
+    ApiResponse<User> handleCreate(@RequestBody @Valid UserCreationRequest request) {
+        this.apiResponse.setMessage("create a new user");
+        this.apiResponse.setResult(this.userService.create(request));
+        return this.apiResponse;
     }
 
     @PutMapping("/{id}")
     User handleUpdate(@PathVariable String id, @RequestBody UserUpdateRequest request) {
-        return userService.update(id, request);
+        return this.userService.update(id, request);
     }
 
     @DeleteMapping("/{id}")
     String handleDelete(@PathVariable String id) {
-        userService.delete(id);
+        this.userService.delete(id);
         return "user has been deleted";
     }
 
     @GetMapping
-    List<User> handleFindAll() {
-        return userService.findAll();
+    ApiResponse<List<User>> handleFindAll() {
+        ApiResponse<List<User>> apiResponse = new ApiResponse<>();
+        apiResponse.setMessage("find all users");
+        apiResponse.setResult(this.userService.findAll());
+        return apiResponse;
     }
 
     @GetMapping("/{id}")
     User handleFindOne(@PathVariable String id) {
-        return userService.findOne(id);
+        return this.userService.findOne(id);
     }
 }
 
