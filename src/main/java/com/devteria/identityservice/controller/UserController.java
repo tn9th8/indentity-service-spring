@@ -42,6 +42,8 @@ public class UserController {
     }
 }
 
+// master thêm code để config cho thú vị nè =))
+
 /* Upgrade:
 - Format json: status, message, data/error
 - Display exception on json (not console)
