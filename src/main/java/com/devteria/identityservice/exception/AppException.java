@@ -1,19 +1,16 @@
 package com.devteria.identityservice.exception;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class AppException extends RuntimeException {
     private ErrorCode errorCode;
 
     public AppException(ErrorCode errorCode) {
         // super(errorCode.getError());
         super();
-        this.errorCode = errorCode;
-    }
-
-    public ErrorCode getErrorCode() {
-        return this.errorCode;
-    }
-
-    public void setErrorCode(ErrorCode errorCode) {
         this.errorCode = errorCode;
     }
 }

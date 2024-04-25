@@ -1,11 +1,15 @@
 package com.devteria.identityservice.controller;
 
-import com.devteria.identityservice.dto.request.ApiResponse;
+import com.devteria.identityservice.dto.response.ApiResponse;
 import com.devteria.identityservice.dto.request.UserCreationRequest;
 import com.devteria.identityservice.dto.request.UserUpdateRequest;
+import com.devteria.identityservice.dto.response.UserResponse;
 import com.devteria.identityservice.entity.User;
 import com.devteria.identityservice.service.UserService;
 import jakarta.validation.Valid;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,22 +17,22 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
+@RequiredArgsConstructor // dua bien final vao constructor de cam cac dependency vao // autowired ko phai la best practice
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserController {
-    @Autowired
     UserService userService;
-    @Autowired
-    ApiResponse<User> apiResponse;
 
     @PostMapping
     ApiResponse<User> handleCreate(@RequestBody @Valid UserCreationRequest request) {
-        this.apiResponse.setMessage("create a new user");
-        this.apiResponse.setResult(this.userService.create(request));
-        return this.apiResponse;
+        ApiResponse<User> apiResponse = new ApiResponse<>();
+        apiResponse.setMessage("create a new user");
+        apiResponse.setResult(this.userService.create(request));
+        return apiResponse;
         // advance: set message before go into this method
     }
 
     @PutMapping("/{id}")
-    User handleUpdate(@PathVariable String id, @RequestBody UserUpdateRequest request) {
+    UserResponse handleUpdate(@PathVariable String id, @RequestBody UserUpdateRequest request) {
         return this.userService.update(id, request);
     }
 
@@ -47,8 +51,11 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    User handleFindOne(@PathVariable String id) {
-        return this.userService.findOne(id);
+    ApiResponse<UserResponse> handleFindOne(@PathVariable String id) {
+        ApiResponse<UserResponse> apiResponse = new ApiResponse<>();
+        apiResponse.setMessage("find all users");
+        apiResponse.setResult(this.userService.findOne(id));
+        return apiResponse;
     }
 }
 
